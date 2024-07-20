@@ -1,10 +1,9 @@
-import express, { Request, Response } from "express";
+import express, { Application, Request, Response } from "express";
 import storyRouter from "./routes/get-story";
 import dotenv from "dotenv";
 
 dotenv.config();
-
-const app = express();
+const app: Application = express();
 const port = process.env.PORT || 3001;
 
 app.use(express.json()); // Add this line to enable JSON parsing in the request body
