@@ -2,11 +2,7 @@
   "name": "festfic-chart-be",
   "version": "1.0.0",
   "main": "dist/index.js",
-  "scripts": {
-    "build": "npx tsc",
-    "start": "nodemon src/index.ts",
-    "dev": "nodemon src/index.ts"
-  },
+  "scripts": {},
   "engines": {
     "node": "18.x"
   },
