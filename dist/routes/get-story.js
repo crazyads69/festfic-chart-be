@@ -36,9 +36,9 @@ storyRouter.get("/stories", (req, res) => __awaiter(void 0, void 0, void 0, func
                 description: story.description,
                 cover: story.cover,
                 url: story.url,
-                reads: story.reads,
-                votes: story.votes,
-                comments: story.comments,
+                reads: story.readCount,
+                votes: story.voteCount,
+                comments: story.commentCount,
             };
         });
         // Sort the stories by using the stable sort algorithm
