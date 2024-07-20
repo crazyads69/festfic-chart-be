@@ -34,9 +34,9 @@ storyRouter.get("/stories", async (req: Request, res: Response) => {
           description: story.description,
           cover: story.cover,
           url: story.url,
-          reads: story.reads,
-          votes: story.votes,
-          comments: story.comments,
+          reads: story.readCount,
+          votes: story.voteCount,
+          comments: story.commentCount,
         };
       }
     );
