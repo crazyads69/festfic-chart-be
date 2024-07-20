@@ -1,5 +1,9 @@
 import express, { Request, Response } from "express";
 import storyRouter from "./routes/get-story";
+import dotenv from "dotenv";
+
+dotenv.config();
+
 const app = express();
 const port = process.env.PORT || 3001;
 
