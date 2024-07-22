@@ -11,74 +11,31 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const const_1 = require("../utils/const");
-const storyRouter = (0, express_1.Router)();
-// Create new route to get all stories from the festfic account (round 1)
-storyRouter.get("/stories", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const URL = process.env.URL ||
-            "https://www.wattpad.com/v4/users/nwjnsfcvn/stories/published";
-        const response = yield fetch(URL);
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        const data = yield response.json();
-        const stories = data.total;
-        // Fetch all stories
-        const allStoriesResponse = yield fetch(`${URL}?limit=${stories}`);
-        if (!allStoriesResponse.ok) {
-            throw new Error(`HTTP error! status: ${allStoriesResponse.status}`);
-        }
-        const allStoriesData = yield allStoriesResponse.json();
-        let index = 0;
-        const newStories = allStoriesData.stories.map((story) => {
-            return {
-                id: index++,
-                title: story.title,
-                description: story.description,
-                cover: story.cover,
-                url: story.url,
-                author: story.user.name,
-                reads: story.readCount,
-                votes: story.voteCount,
-                comments: story.commentCount,
-                modifyDate: story.modifyDate,
-            };
-        });
-        // Sort the stories by using the stable sort algorithm
-        // Stable Sort Implementation
-        newStories.sort((a, b) => {
-            if (a.votes === b.votes) {
-                if (a.comments === b.comments) {
-                    if (a.reads === b.reads) {
-                        return b.id - a.id;
-                    }
-                    return b.reads - a.reads;
-                }
-                return b.comments - a.comments;
-            }
-            return b.votes - a.votes;
-        });
-        // Return the stories
-        res.status(200).json(newStories);
-    }
-    catch (error) {
-        console.error(error);
-        res.status(500).json({ message: "Failed to get stories" });
-    }
-}));
+const storyRoundTwo = (0, express_1.Router)();
+// Create new route to get all stories from the festfic account (round 2)
 // Create new route to get all stories from the festfic account (round 2)
 // This round the author has upload the story by themself so we can get the stories by using the author name and sort by date to get the latest stories
-storyRouter.get("/stories-round-2", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+storyRoundTwo.get("/stories-round-2", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const stories = [];
-        yield Promise.all(const_1.AUTHORS.map((author) => __awaiter(void 0, void 0, void 0, function* () {
+        yield Promise.all(
+        // Add a delay of 1 second before each request
+        const_1.AUTHORS.map((author) => __awaiter(void 0, void 0, void 0, function* () {
             const URL = `https://www.wattpad.com/v4/users/${author}/stories/published`;
             const response = yield fetch(URL);
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
+                // Log the response to console
             }
             const data = yield response.json();
-            const authorStories = data.stories.map((story) => {
+            const total = data.total;
+            // Fetch all stories
+            const allStoriesResponse = yield fetch(`${URL}?limit=${total}`);
+            if (!allStoriesResponse.ok) {
+                throw new Error(`HTTP error! status: ${allStoriesResponse.status}`);
+            }
+            const allStoriesData = yield allStoriesResponse.json();
+            const authorStories = allStoriesData.stories.map((story) => {
                 return {
                     id: story.id,
                     title: story.title,
@@ -98,7 +55,9 @@ storyRouter.get("/stories-round-2", (req, res) => __awaiter(void 0, void 0, void
             });
             // TODO: Add check the @nwjnsfcvn account check to be valid story for round 2
             // Push the latest story from each author
-            stories.push(authorStories[0]);
+            if (authorStories[0] !== undefined) {
+                stories.push(authorStories[0]);
+            }
         })));
         // Sort the stories array after all promises have resolved
         stories.sort((a, b) => {
@@ -121,5 +80,5 @@ storyRouter.get("/stories-round-2", (req, res) => __awaiter(void 0, void 0, void
         res.status(500).json({ message: "Failed to get stories" });
     }
 }));
-exports.default = storyRouter;
-//# sourceMappingURL=get-story.js.map
+exports.default = storyRoundTwo;
+//# sourceMappingURL=get-story-round-two.js.map

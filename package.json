@@ -15,7 +15,10 @@
   "description": "",
   "dependencies": {
     "dotenv": "^16.4.5",
-    "express": "^4.19.2"
+    "express": "^4.19.2",
+    "fetch-with-proxy": "^3.0.1",
+    "https-proxy-agent": "^7.0.5",
+    "node-fetch": "^3.3.2"
   },
   "devDependencies": {
     "@types/express": "^4.17.21",

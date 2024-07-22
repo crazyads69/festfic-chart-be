@@ -1,6 +1,7 @@
 import express, { Application, Request, Response } from "express";
 import storyRouter from "./routes/get-story";
 import dotenv from "dotenv";
+import storyRoundTwo from "./routes/get-story-round-two";
 
 dotenv.config();
 const app: Application = express();
@@ -10,6 +11,7 @@ app.use(express.json()); // Add this line to enable JSON parsing in the request 
 
 // Add the router to the app
 app.use("/api", storyRouter);
+app.use("/api", storyRoundTwo);
 
 app.get("/", (req: Request, res: Response) => {
   // Send a JSON response with a message
