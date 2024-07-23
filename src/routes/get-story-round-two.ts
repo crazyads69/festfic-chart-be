@@ -54,7 +54,7 @@ storyRoundTwo.get("/stories-round-2", async (req: Request, res: Response) => {
         });
         // TODO: Add check the @nwjnsfcvn account check to be valid story for round 2
         // Push the latest story from each author
-        if (authorStories[0] !== undefined) {
+        if (authorStories[0] !== null && authorStories[0] !== undefined) {
           stories.push(authorStories[0]);
         }
       })
