@@ -9,4 +9,5 @@ export interface WattpadStory {
   votes: number;
   comments: number;
   modifyDate: string;
+  createDate: string;
 }

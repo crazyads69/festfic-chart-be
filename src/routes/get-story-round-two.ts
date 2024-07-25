@@ -1,6 +1,6 @@
 import { Router, Request, Response } from "express";
 import { WattpadStory } from "../model/wattpad-story.model";
-import { AUTHORS } from "../utils/const";
+import { AUTHORS, ROUND_TWO_START_DATE } from "../utils/const";
 
 const storyRoundTwo = Router();
 
@@ -30,7 +30,7 @@ storyRoundTwo.get("/stories-round-2", async (req: Request, res: Response) => {
         }
 
         const allStoriesData = await allStoriesResponse.json();
-        const authorStories: WattpadStory[] = allStoriesData.stories.map(
+        let authorStories: WattpadStory[] = allStoriesData.stories.map(
           (story: any) => {
             return {
               id: story.id,
@@ -43,6 +43,7 @@ storyRoundTwo.get("/stories-round-2", async (req: Request, res: Response) => {
               votes: story.voteCount,
               comments: story.commentCount,
               modifyDate: story.modifyDate,
+              createDate: story.createDate,
             };
           }
         );
@@ -51,6 +52,10 @@ storyRoundTwo.get("/stories-round-2", async (req: Request, res: Response) => {
           return (
             new Date(b.modifyDate).getTime() - new Date(a.modifyDate).getTime()
           );
+        });
+        // Filter the stories by create date after the round 2 start date
+        authorStories = authorStories.filter((story) => {
+          return new Date(story.createDate) > ROUND_TWO_START_DATE;
         });
         // TODO: Add check the @nwjnsfcvn account check to be valid story for round 2
         // Push the latest story from each author

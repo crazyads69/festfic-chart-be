@@ -35,7 +35,7 @@ storyRoundTwo.get("/stories-round-2", (req, res) => __awaiter(void 0, void 0, vo
                 throw new Error(`HTTP error! status: ${allStoriesResponse.status}`);
             }
             const allStoriesData = yield allStoriesResponse.json();
-            const authorStories = allStoriesData.stories.map((story) => {
+            let authorStories = allStoriesData.stories.map((story) => {
                 return {
                     id: story.id,
                     title: story.title,
@@ -47,11 +47,16 @@ storyRoundTwo.get("/stories-round-2", (req, res) => __awaiter(void 0, void 0, vo
                     votes: story.voteCount,
                     comments: story.commentCount,
                     modifyDate: story.modifyDate,
+                    createDate: story.createDate,
                 };
             });
             // Sort by modified date (keep this, it's good practice)
             authorStories.sort((a, b) => {
                 return (new Date(b.modifyDate).getTime() - new Date(a.modifyDate).getTime());
+            });
+            // Filter the stories by create date after the round 2 start date
+            authorStories = authorStories.filter((story) => {
+                return new Date(story.createDate) > const_1.ROUND_TWO_START_DATE;
             });
             // TODO: Add check the @nwjnsfcvn account check to be valid story for round 2
             // Push the latest story from each author
