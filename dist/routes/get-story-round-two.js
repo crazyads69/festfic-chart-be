@@ -48,6 +48,7 @@ storyRoundTwo.get("/stories-round-2", (req, res) => __awaiter(void 0, void 0, vo
                     comments: story.commentCount,
                     modifyDate: story.modifyDate,
                     createDate: story.createDate,
+                    parts: story.parts,
                 };
             });
             // Sort by modified date (keep this, it's good practice)
@@ -61,7 +62,27 @@ storyRoundTwo.get("/stories-round-2", (req, res) => __awaiter(void 0, void 0, vo
             // TODO: Add check the @nwjnsfcvn account check to be valid story for round 2
             // Push the latest story from each author
             if (authorStories[0] !== null && authorStories[0] !== undefined) {
-                stories.push(authorStories[0]);
+                // Get the first part of the story to get the exact reads, votes, and comments
+                // Sort the parts by create date to get the oldest part
+                authorStories[0].parts.sort((a, b) => {
+                    return (new Date(a.createDate).getTime() -
+                        new Date(b.createDate).getTime());
+                });
+                // Push the story to the stories array with the exact reads, votes, and comments from the first part
+                stories.push({
+                    id: authorStories[0].id,
+                    title: authorStories[0].title,
+                    description: authorStories[0].description,
+                    cover: authorStories[0].cover,
+                    url: authorStories[0].url,
+                    author: authorStories[0].author,
+                    reads: authorStories[0].parts[0].readCount,
+                    votes: authorStories[0].parts[0].voteCount,
+                    comments: authorStories[0].parts[0].commentCount,
+                    modifyDate: authorStories[0].modifyDate,
+                    createDate: authorStories[0].createDate,
+                    parts: authorStories[0].parts,
+                });
             }
         })));
         // Sort the stories array after all promises have resolved

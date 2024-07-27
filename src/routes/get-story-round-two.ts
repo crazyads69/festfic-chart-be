@@ -44,6 +44,7 @@ storyRoundTwo.get("/stories-round-2", async (req: Request, res: Response) => {
               comments: story.commentCount,
               modifyDate: story.modifyDate,
               createDate: story.createDate,
+              parts: story.parts,
             };
           }
         );
@@ -60,7 +61,29 @@ storyRoundTwo.get("/stories-round-2", async (req: Request, res: Response) => {
         // TODO: Add check the @nwjnsfcvn account check to be valid story for round 2
         // Push the latest story from each author
         if (authorStories[0] !== null && authorStories[0] !== undefined) {
-          stories.push(authorStories[0]);
+          // Get the first part of the story to get the exact reads, votes, and comments
+          // Sort the parts by create date to get the oldest part
+          authorStories[0].parts.sort((a, b) => {
+            return (
+              new Date(a.createDate).getTime() -
+              new Date(b.createDate).getTime()
+            );
+          });
+          // Push the story to the stories array with the exact reads, votes, and comments from the first part
+          stories.push({
+            id: authorStories[0].id,
+            title: authorStories[0].title,
+            description: authorStories[0].description,
+            cover: authorStories[0].cover,
+            url: authorStories[0].url,
+            author: authorStories[0].author,
+            reads: authorStories[0].parts[0].readCount,
+            votes: authorStories[0].parts[0].voteCount,
+            comments: authorStories[0].parts[0].commentCount,
+            modifyDate: authorStories[0].modifyDate,
+            createDate: authorStories[0].createDate,
+            parts: authorStories[0].parts,
+          });
         }
       })
     );
