@@ -1,6 +1,10 @@
 import { Router, Request, Response } from "express";
 import { WattpadStory } from "../model/wattpad-story.model";
-import { AUTHORS, ROUND_TWO_START_DATE } from "../utils/const";
+import {
+  AUTHORS,
+  ROUND_TWO_END_DATE,
+  ROUND_TWO_START_DATE,
+} from "../utils/const";
 
 const storyRoundTwo = Router();
 
@@ -54,9 +58,12 @@ storyRoundTwo.get("/stories-round-2", async (req: Request, res: Response) => {
             new Date(b.modifyDate).getTime() - new Date(a.modifyDate).getTime()
           );
         });
-        // Filter the stories by create date after the round 2 start date
+        // Filter the stories by create date after the round 2 start date and before the round 2 end date
         authorStories = authorStories.filter((story) => {
-          return new Date(story.createDate) > ROUND_TWO_START_DATE;
+          return (
+            new Date(story.createDate) > ROUND_TWO_START_DATE &&
+            new Date(story.createDate) < ROUND_TWO_END_DATE
+          );
         });
         // TODO: Add check the @nwjnsfcvn account check to be valid story for round 2
         // Push the latest story from each author

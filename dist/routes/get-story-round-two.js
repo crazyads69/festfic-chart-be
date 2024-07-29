@@ -55,9 +55,10 @@ storyRoundTwo.get("/stories-round-2", (req, res) => __awaiter(void 0, void 0, vo
             authorStories.sort((a, b) => {
                 return (new Date(b.modifyDate).getTime() - new Date(a.modifyDate).getTime());
             });
-            // Filter the stories by create date after the round 2 start date
+            // Filter the stories by create date after the round 2 start date and before the round 2 end date
             authorStories = authorStories.filter((story) => {
-                return new Date(story.createDate) > const_1.ROUND_TWO_START_DATE;
+                return (new Date(story.createDate) > const_1.ROUND_TWO_START_DATE &&
+                    new Date(story.createDate) < const_1.ROUND_TWO_END_DATE);
             });
             // TODO: Add check the @nwjnsfcvn account check to be valid story for round 2
             // Push the latest story from each author

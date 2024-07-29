@@ -20,3 +20,4 @@ export const AUTHORS = [
 //
 // Define create date valid for round 2
 export const ROUND_TWO_START_DATE = new Date("2024-07-22T06:00:00Z");
+export const ROUND_TWO_END_DATE = new Date("2024-07-30T06:00:00Z");
